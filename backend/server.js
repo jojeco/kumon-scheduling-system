@@ -1,44 +1,39 @@
-// server.js - Main entry point for the Express server
+import express from "express";
+import cors from "cors";
+import admin from "./firebaseAdmin"; // ✅ make sure this is the correct path
 
-// Load environment variables from .env file
-require('dotenv').config();
-
-// Import required packages
-const express = require('express');
-const cors = require('cors');
-const { Pool } = require('pg');
-
-// Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// Middleware
-app.use(cors()); // Enable CORS for all routes
-app.use(express.json()); // Parse JSON request bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
+app.use(cors());
+app.use(express.json());
 
-// Database connection using individual parameters
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+app.get("/", (req, res) => {
+  res.send("API is working");
 });
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'Server is running' });
+// ✅ THIS MUST EXIST
+app.get("/profile", async (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    res.json({
+      uid: decodedToken.uid,
+      email: decodedToken.email,
+    });
+  } catch (error) {
+    console.error("Token verification failed:", error);
+    res.status(403).json({ error: "Unauthorized" });
+  }
 });
 
-// Root endpoint
-app.get('/', (req, res) => {
-  res.send('Welcome to the Kumon Scheduling System API');
-});
-
-// Start the server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
-
-module.exports = { app, pool }; // Export for testing
