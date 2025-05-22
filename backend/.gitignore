@@ -1,0 +1,40 @@
+# Node modules (always ignore this — it gets recreated on install)
+node_modules/
+
+# Build output (if using TypeScript or bundlers)
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# dotenv environment files (your secrets)
+.env
+
+# Firebase service account key (VERY important)
+firebase/serviceAccountKey.json
+
+# macOS Finder clutter
+.DS_Store
+../.DS_Store
+
+# Node + build
+node_modules/
+dist/
+build/
+
+# Firebase admin key
+Firebase/serviceAccountKey.json
+
+# Env config
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# Ignore frontend if you're tracking it separately
+../frontend/
