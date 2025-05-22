@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import admin from "./firebaseAdmin"; // ✅ make sure this is the correct path
+import admin from "./firebaseAdmin.js"; // ✅ make sure this is the correct path
 
 const app = express();
 const PORT = process.env.PORT || 5001;
