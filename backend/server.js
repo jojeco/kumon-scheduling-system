@@ -2,6 +2,17 @@ import express from "express";
 import cors from "cors";
 import admin from "./firebaseAdmin.js"; // ✅ make sure this is the correct path
 
+import { pool } from "./db.js"; // Make sure the import path matches your project structure
+
+app.get("/db-test", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT NOW()");
+    res.json({ connected: true, time: result.rows[0].now });
+  } catch (error) {
+    console.error("❌ DB connection failed:", error.message);
+    res.status(500).json({ connected: false, error: error.message });
+  }
+});
 const app = express();
 const PORT = process.env.PORT || 5001;
 
