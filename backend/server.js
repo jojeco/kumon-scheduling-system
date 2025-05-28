@@ -13,6 +13,7 @@ app.get("/db-test", async (req, res) => {
     res.status(500).json({ connected: false, error: error.message });
   }
 });
+
 const app = express();
 const PORT = process.env.PORT || 5001;
 
