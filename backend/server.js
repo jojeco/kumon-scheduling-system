@@ -1,9 +1,15 @@
 import express from "express";
 import cors from "cors";
-import admin from "./firebaseAdmin.js"; // ✅ make sure this is the correct path
+import admin from "./firebaseAdmin.js"; 
+import pool from "./db.js"; 
 
-import { pool } from "./db.js"; // Make sure the import path matches your project structure
+const app = express();
+const PORT = process.env.PORT || 5001;
 
+app.use(cors());
+app.use(express.json());
+
+// ✅ Test route for DB connection
 app.get("/db-test", async (req, res) => {
   try {
     const result = await pool.query("SELECT NOW()");
@@ -14,17 +20,12 @@ app.get("/db-test", async (req, res) => {
   }
 });
 
-const app = express();
-const PORT = process.env.PORT || 5001;
-
-app.use(cors());
-app.use(express.json());
-
+// ✅ Simple API root check
 app.get("/", (req, res) => {
   res.send("API is working");
 });
 
-// ✅ THIS MUST EXIST
+// ✅ Auth-protected profile route
 app.get("/profile", async (req, res) => {
   const authHeader = req.headers.authorization;
 

@@ -1,5 +1,6 @@
 // This file is used to connect to the PostgreSQL database.
-const { Pool } = require('pg');
+import pkg from "pg";
+const { Pool } = pkg;
 
 const pool = new Pool({
   user: process.env.PGUSER,
@@ -9,4 +10,4 @@ const pool = new Pool({
   port: process.env.PGPORT,
 });
 
-module.exports = pool;
+export default pool;
