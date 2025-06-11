@@ -37,4 +37,4 @@ Firebase/serviceAccountKey.json
 npm-debug.log*
 
 # Ignore frontend if you're tracking it separately
-../frontend/
+#../frontend/
